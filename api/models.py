@@ -244,7 +244,7 @@ class SleepLog(models.Model):
     quality = models.IntegerField()  # 1-5 self-assessed
     notes = models.TextField(blank=True, null=True)
 
-    class Meta:
+    class Meta: 
         unique_together = ('user', 'date')
 
 
