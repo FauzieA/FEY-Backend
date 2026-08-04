@@ -18,7 +18,8 @@ class CharacterProfile(models.Model):
     total_hours_trained = models.FloatField(default=0.0)
 
     def __str__(self):
-        return f"{self.user.username}'s Profile (Lv. {self.level})"
+        username = self.user.username if self.user else 'anonymous'
+        return f"{username}'s Profile (Lv. {self.level})"
 
 
 class WorkoutSession(models.Model):
@@ -42,7 +43,8 @@ class WorkoutSession(models.Model):
     completed = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Workout Session ({self.plan_title or 'Custom'}) - {self.user.username}"
+        username = self.user.username if self.user else 'anonymous'
+        return f"Workout Session ({self.plan_title or 'Custom'}) - {username}"
 
 
 class SessionExercise(models.Model):
