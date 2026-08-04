@@ -77,9 +77,9 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         exercises_data = validated_data.pop('exercises', [])
-        user = self.context['request'].user
+        user = self.context.get('request') and self.context['request'].user
 
-        # Create session
+        # Create session (user is now optional)
         session = WorkoutSession.objects.create(user=user, **validated_data)
 
         # Create nested exercises and sets
