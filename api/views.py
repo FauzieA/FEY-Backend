@@ -70,57 +70,57 @@ from .serializers import (
 
 class CharacterProfileViewSet(viewsets.ModelViewSet):
     serializer_class = CharacterProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return CharacterProfile.objects.filter(user=self.request.user)
+        return CharacterProfile.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class WorkoutSessionViewSet(viewsets.ModelViewSet):
     serializer_class = WorkoutSessionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return WorkoutSession.objects.filter(user=self.request.user).order_by('-started_at')
+        return WorkoutSession.objects.all().order_by('-started_at')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class SalahLogViewSet(viewsets.ModelViewSet):
     serializer_class = SalahLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return SalahLog.objects.filter(user=self.request.user).order_by('-date')
+        return SalahLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class MemorizationLogViewSet(viewsets.ModelViewSet):
     serializer_class = MemorizationLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return MemorizationLog.objects.filter(user=self.request.user)
+        return MemorizationLog.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class DhikrLogViewSet(viewsets.ModelViewSet):
     serializer_class = DhikrLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return DhikrLog.objects.filter(user=self.request.user).order_by('-date')
+        return DhikrLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -128,57 +128,57 @@ class DhikrLogViewSet(viewsets.ModelViewSet):
 # ==========================================
 class XpEventViewSet(viewsets.ModelViewSet):
     serializer_class = XpEventSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return XpEvent.objects.filter(user=self.request.user).order_by('-date')
+        return XpEvent.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class AchievementRecordViewSet(viewsets.ModelViewSet):
     serializer_class = AchievementRecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return AchievementRecord.objects.filter(user=self.request.user).order_by('-unlocked_at')
+        return AchievementRecord.objects.all().order_by('-unlocked_at')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class AppSettingsViewSet(viewsets.ModelViewSet):
     serializer_class = AppSettingsSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return AppSettings.objects.filter(user=self.request.user)
+        return AppSettings.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class PersonalRecordViewSet(viewsets.ModelViewSet):
     serializer_class = PersonalRecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return PersonalRecord.objects.filter(user=self.request.user).order_by('-date')
+        return PersonalRecord.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):
     serializer_class = WorkoutPlanSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return WorkoutPlan.objects.filter(user=self.request.user)
+        return WorkoutPlan.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -186,57 +186,57 @@ class WorkoutPlanViewSet(viewsets.ModelViewSet):
 # ==========================================
 class QuranReadingLogViewSet(viewsets.ModelViewSet):
     serializer_class = QuranReadingLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return QuranReadingLog.objects.filter(user=self.request.user).order_by('-date')
+        return QuranReadingLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class MemorizationEntryViewSet(viewsets.ModelViewSet):
     serializer_class = MemorizationEntrySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return MemorizationEntry.objects.filter(user=self.request.user)
+        return MemorizationEntry.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class RevisionLogViewSet(viewsets.ModelViewSet):
     serializer_class = RevisionLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return RevisionLog.objects.filter(user=self.request.user).order_by('-date')
+        return RevisionLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class AdhkarLogViewSet(viewsets.ModelViewSet):
     serializer_class = AdhkarLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return AdhkarLog.objects.filter(user=self.request.user).order_by('-date')
+        return AdhkarLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class MissedFastViewSet(viewsets.ModelViewSet):
     serializer_class = MissedFastSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return MissedFast.objects.filter(user=self.request.user).order_by('-missed_on')
+        return MissedFast.objects.all().order_by('-missed_on')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -244,57 +244,57 @@ class MissedFastViewSet(viewsets.ModelViewSet):
 # ==========================================
 class MeasurementViewSet(viewsets.ModelViewSet):
     serializer_class = MeasurementSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return Measurement.objects.filter(user=self.request.user).order_by('-date')
+        return Measurement.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class WeightLogViewSet(viewsets.ModelViewSet):
     serializer_class = WeightLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return WeightLog.objects.filter(user=self.request.user).order_by('-date')
+        return WeightLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class SleepLogViewSet(viewsets.ModelViewSet):
     serializer_class = SleepLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return SleepLog.objects.filter(user=self.request.user).order_by('-date')
+        return SleepLog.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class CycleLogViewSet(viewsets.ModelViewSet):
     serializer_class = CycleLogSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return CycleLog.objects.filter(user=self.request.user).order_by('-start_date')
+        return CycleLog.objects.all().order_by('-start_date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class HealthNoteViewSet(viewsets.ModelViewSet):
     serializer_class = HealthNoteSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return HealthNote.objects.filter(user=self.request.user).order_by('-date')
+        return HealthNote.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -302,24 +302,24 @@ class HealthNoteViewSet(viewsets.ModelViewSet):
 # ==========================================
 class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return Book.objects.filter(user=self.request.user)
+        return Book.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class ReadingSessionViewSet(viewsets.ModelViewSet):
     serializer_class = ReadingSessionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return ReadingSession.objects.filter(user=self.request.user).order_by('-date')
+        return ReadingSession.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -327,24 +327,24 @@ class ReadingSessionViewSet(viewsets.ModelViewSet):
 # ==========================================
 class PerfumeFormulaViewSet(viewsets.ModelViewSet):
     serializer_class = PerfumeFormulaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return PerfumeFormula.objects.filter(user=self.request.user)
+        return PerfumeFormula.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class PerfumeVersionViewSet(viewsets.ModelViewSet):
     serializer_class = PerfumeVersionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return PerfumeVersion.objects.filter(user=self.request.user).order_by('-date')
+        return PerfumeVersion.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -352,46 +352,46 @@ class PerfumeVersionViewSet(viewsets.ModelViewSet):
 # ==========================================
 class SavingsEntryViewSet(viewsets.ModelViewSet):
     serializer_class = SavingsEntrySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return SavingsEntry.objects.filter(user=self.request.user).order_by('-date')
+        return SavingsEntry.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class SavingsGoalViewSet(viewsets.ModelViewSet):
     serializer_class = SavingsGoalSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return SavingsGoal.objects.filter(user=self.request.user)
+        return SavingsGoal.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class PurchasePlanViewSet(viewsets.ModelViewSet):
     serializer_class = PurchasePlanSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return PurchasePlan.objects.filter(user=self.request.user).order_by('-created_at')
+        return PurchasePlan.objects.all().order_by('-created_at')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class WealthProfileViewSet(viewsets.ModelViewSet):
     serializer_class = WealthProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return WealthProfile.objects.filter(user=self.request.user)
+        return WealthProfile.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 # ==========================================
@@ -399,43 +399,43 @@ class WealthProfileViewSet(viewsets.ModelViewSet):
 # ==========================================
 class JournalEntryViewSet(viewsets.ModelViewSet):
     serializer_class = JournalEntrySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return JournalEntry.objects.filter(user=self.request.user).order_by('-date')
+        return JournalEntry.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class PersonViewSet(viewsets.ModelViewSet):
     serializer_class = PersonSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return Person.objects.filter(user=self.request.user)
+        return Person.objects.all()
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class CallReminderViewSet(viewsets.ModelViewSet):
     serializer_class = CallReminderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return CallReminder.objects.filter(user=self.request.user).order_by('-due_date')
+        return CallReminder.objects.all().order_by('-due_date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
 
 
 class TimelineEventViewSet(viewsets.ModelViewSet):
     serializer_class = TimelineEventSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return TimelineEvent.objects.filter(user=self.request.user).order_by('-date')
+        return TimelineEvent.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save()
