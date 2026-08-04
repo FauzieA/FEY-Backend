@@ -31,7 +31,6 @@ class WorkoutSession(models.Model):
     duration_minutes = models.IntegerField(default=0)
     
     # Macro Analytics metrics
-    total_volume_kg = models.FloatField(default=0.0)
     total_sets_completed = models.IntegerField(default=0)
     total_reps_completed = models.IntegerField(default=0)
     
