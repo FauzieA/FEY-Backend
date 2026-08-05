@@ -1,4 +1,6 @@
+from django.http import Http404
 from rest_framework import viewsets, permissions, status
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from .models import (
     CharacterProfile,
@@ -95,8 +97,7 @@ class WorkoutSessionViewSet(viewsets.ModelViewSet):
         # Support upsert via PUT
         try:
             return super().update(request, *args, **kwargs)
-        except WorkoutSession.DoesNotExist:
-            # If record doesn't exist, create it
+        except (WorkoutSession.DoesNotExist, Http404, NotFound):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
@@ -155,8 +156,7 @@ class XpEventViewSet(viewsets.ModelViewSet):
         # Support upsert via PUT
         try:
             return super().update(request, *args, **kwargs)
-        except XpEvent.DoesNotExist:
-            # If record doesn't exist, create it
+        except (XpEvent.DoesNotExist, Http404, NotFound):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
@@ -189,12 +189,24 @@ class AppSettingsViewSet(viewsets.ModelViewSet):
 class PersonalRecordViewSet(viewsets.ModelViewSet):
     serializer_class = PersonalRecordSerializer
     permission_classes = [permissions.AllowAny]
+    lookup_field = 'id'
 
     def get_queryset(self):
         return PersonalRecord.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
         serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        # Support upsert via PUT
+        try:
+            return super().update(request, *args, **kwargs)
+        except (PersonalRecord.DoesNotExist, Http404, NotFound):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class WorkoutPlanViewSet(viewsets.ModelViewSet):

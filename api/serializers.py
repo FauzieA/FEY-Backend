@@ -88,7 +88,10 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         exercises_data = validated_data.pop('exercises', [])
         request = self.context.get('request')
-        user = request.user if request and request.is_authenticated else None
+        user = None
+        if request is not None and hasattr(request, 'user'):
+            user_obj = request.user
+            user = user_obj if getattr(user_obj, 'is_authenticated', False) else None
 
         # Create session (user is now optional)
         session = WorkoutSession.objects.create(user=user, **validated_data)
