@@ -80,7 +80,7 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
 
     def get_total_volume_kg(self, obj):
         total = 0.0
-        for exercise in getattr(obj, 'exercises', []):
+        for exercise in obj.exercises.all():
             for set_log in getattr(exercise, 'sets', []):
                 total += (getattr(set_log, 'reps', 0) or 0) * (getattr(set_log, 'weight_kg', 0.0) or 0.0)
         return total
