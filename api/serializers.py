@@ -42,7 +42,8 @@ class CharacterProfileSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'level', 'current_xp', 'next_level_xp', 
             'current_streak', 'longest_streak', 'last_workout_date', 
-            'attributes', 'total_workouts_completed', 'total_hours_trained'
+            'attributes', 'total_workouts_completed', 'total_hours_trained',
+            'created_at', 'updated_at'
         ]
 
 
@@ -70,20 +71,16 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
         model = WorkoutSession
         fields = [
             'id', 'plan_id', 'plan_title', 'started_at', 'completed_at',
-            'duration_seconds', 'duration_minutes',
+            'duration_seconds', 'duration_minutes', 'total_volume_kg',
             'total_sets_completed', 'total_reps_completed', 'average_rpe',
-            'session_rating', 'xp_earned', 'completed', 'exercises'
+            'session_rating', 'xp_earned', 'completed', 'exercises',
+            'created_at', 'updated_at'
         ]
 
     def create(self, validated_data):
         exercises_data = validated_data.pop('exercises', [])
         request = self.context.get('request')
-        user = None
-
-        if request is not None:
-            auth = getattr(request, 'user', None)
-            if auth is not None and getattr(auth, 'is_authenticated', False):
-                user = auth
+        user = request.user if request and request.is_authenticated else None
 
         # Create session (user is now optional)
         session = WorkoutSession.objects.create(user=user, **validated_data)
@@ -123,7 +120,7 @@ class DhikrLogSerializer(serializers.ModelSerializer):
 class XpEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = XpEvent
-        fields = ['id', 'module', 'activity', 'amount', 'attribute', 'date', 'created_at']
+        fields = ['id', 'module', 'activity', 'amount', 'attribute', 'date', 'session_id', 'created_at', 'updated_at']
 
 
 class AchievementRecordSerializer(serializers.ModelSerializer):
@@ -135,13 +132,13 @@ class AchievementRecordSerializer(serializers.ModelSerializer):
 class AppSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AppSettings
-        fields = ['id', 'default_rest_seconds', 'sound_enabled', 'vibration_enabled']
+        fields = ['id', 'default_rest_seconds', 'sound_enabled', 'vibration_enabled', 'created_at', 'updated_at']
 
 
 class PersonalRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = PersonalRecord
-        fields = ['id', 'exercise_id', 'weight', 'reps', 'date']
+        fields = ['id', 'exercise_id', 'weight', 'reps', 'date', 'created_at', 'updated_at']
 
 
 class WorkoutPlanSerializer(serializers.ModelSerializer):

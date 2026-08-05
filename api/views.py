@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
 from .models import (
     CharacterProfile,
     WorkoutSession,
@@ -82,12 +83,25 @@ class CharacterProfileViewSet(viewsets.ModelViewSet):
 class WorkoutSessionViewSet(viewsets.ModelViewSet):
     serializer_class = WorkoutSessionSerializer
     permission_classes = [permissions.AllowAny]
+    lookup_field = 'id'
 
     def get_queryset(self):
         return WorkoutSession.objects.all().order_by('-started_at')
 
     def perform_create(self, serializer):
         serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        # Support upsert via PUT
+        try:
+            return super().update(request, *args, **kwargs)
+        except WorkoutSession.DoesNotExist:
+            # If record doesn't exist, create it
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class SalahLogViewSet(viewsets.ModelViewSet):
@@ -129,12 +143,25 @@ class DhikrLogViewSet(viewsets.ModelViewSet):
 class XpEventViewSet(viewsets.ModelViewSet):
     serializer_class = XpEventSerializer
     permission_classes = [permissions.AllowAny]
+    lookup_field = 'id'
 
     def get_queryset(self):
         return XpEvent.objects.all().order_by('-date')
 
     def perform_create(self, serializer):
         serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        # Support upsert via PUT
+        try:
+            return super().update(request, *args, **kwargs)
+        except XpEvent.DoesNotExist:
+            # If record doesn't exist, create it
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class AchievementRecordViewSet(viewsets.ModelViewSet):

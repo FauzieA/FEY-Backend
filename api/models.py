@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
+import uuid
 
 class CharacterProfile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='character_profile', null=True, blank=True)
     level = models.IntegerField(default=1)
     current_xp = models.IntegerField(default=0)
@@ -16,13 +19,18 @@ class CharacterProfile(models.Model):
     # Lifetime summary stats for instant profile dashboard rendering
     total_workouts_completed = models.IntegerField(default=0)
     total_hours_trained = models.FloatField(default=0.0)
-
+    
+    # Sync fields
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         username = self.user.username if self.user else 'anonymous'
         return f"{username}'s Profile (Lv. {self.level})"
 
 
 class WorkoutSession(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='workout_sessions', null=True, blank=True)
     plan_id = models.CharField(max_length=50, blank=True, null=True)
     plan_title = models.CharField(max_length=100, blank=True, null=True)
@@ -41,6 +49,10 @@ class WorkoutSession(models.Model):
     
     xp_earned = models.IntegerField(default=0)
     completed = models.BooleanField(default=True)
+    
+    # Sync fields
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         username = self.user.username if self.user else 'anonymous'
@@ -87,6 +99,7 @@ class ExerciseSetLog(models.Model):
 # LIFESTYLE TRACKERS (Salah, Memorization, Dhikr)
 # ==========================================
 class SalahLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='salah_logs', null=True, blank=True)
     date = models.DateField()
     fajr = models.CharField(max_length=20, default='pending')     # 'on_time', 'delayed', 'missed', 'qada'
@@ -100,6 +113,7 @@ class SalahLog(models.Model):
 
 
 class MemorizationLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memorization_logs', null=True, blank=True)
     title = models.CharField(max_length=100) # e.g., "Surah Al-Mulk"
     status = models.CharField(max_length=30, default='in_progress') # 'memorizing', 'revising', 'completed'
@@ -109,6 +123,7 @@ class MemorizationLog(models.Model):
 
 
 class DhikrLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='dhikr_logs', null=True, blank=True)
     date = models.DateField()
     dhikr_type = models.CharField(max_length=50) # e.g., "Astaghfar", "Salawat"
@@ -123,40 +138,51 @@ class DhikrLog(models.Model):
 # CHARACTER & GAMIFICATION
 # ==========================================
 class XpEvent(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='xp_events', null=True, blank=True)
     module = models.CharField(max_length=50)  # training, faith, health, library, perfumery, wealth, life
     activity = models.CharField(max_length=100)
     amount = models.IntegerField()
     attribute = models.CharField(max_length=50)  # discipline, devotion, strength, vitality, knowledge, craft, stewardship, connection
     date = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    session_id = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class AchievementRecord(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='achievements', null=True, blank=True)
     achievement_id = models.CharField(max_length=100, unique=True)
     unlocked_at = models.DateTimeField(auto_now_add=True)
 
 
 class AppSettings(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='app_settings', null=True, blank=True)
     default_rest_seconds = models.IntegerField(default=90)
     sound_enabled = models.BooleanField(default=True)
     vibration_enabled = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class PersonalRecord(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='personal_records', null=True, blank=True)
     exercise_id = models.CharField(max_length=100)
     weight = models.FloatField()
     reps = models.IntegerField(null=True, blank=True)
     date = models.DateField()
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('user', 'exercise_id', 'date')
 
 
 class WorkoutPlan(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='workout_plans', null=True, blank=True)
     plan_id = models.CharField(max_length=50, unique=True)  # e.g., 'plan_mon'
     title = models.CharField(max_length=100)
@@ -170,6 +196,7 @@ class WorkoutPlan(models.Model):
 # FAITH MODULE (Extended)
 # ==========================================
 class QuranReadingLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='quran_reading_logs', null=True, blank=True)
     date = models.DateField()
     surah = models.CharField(max_length=100)
@@ -181,6 +208,7 @@ class QuranReadingLog(models.Model):
 
 
 class MemorizationEntry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memorization_entries', null=True, blank=True)
     surah = models.CharField(max_length=100)
     from_ayah = models.IntegerField()
@@ -191,6 +219,7 @@ class MemorizationEntry(models.Model):
 
 
 class RevisionLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='revision_logs', null=True, blank=True)
     date = models.DateField()
     surah = models.CharField(max_length=100)
@@ -199,6 +228,7 @@ class RevisionLog(models.Model):
 
 
 class AdhkarLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='adhkar_logs', null=True, blank=True)
     date = models.DateField(unique=True)
     morning = models.BooleanField(default=False)
@@ -208,6 +238,7 @@ class AdhkarLog(models.Model):
 
 
 class MissedFast(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='missed_fasts', null=True, blank=True)
     missed_on = models.DateField()
     reason = models.CharField(max_length=200, blank=True, null=True)
@@ -218,6 +249,7 @@ class MissedFast(models.Model):
 # HEALTH MODULE
 # ==========================================
 class Measurement(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='measurements', null=True, blank=True)
     date = models.DateField()
     waist_cm = models.FloatField(null=True, blank=True)
@@ -229,6 +261,7 @@ class Measurement(models.Model):
 
 
 class WeightLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='weight_logs', null=True, blank=True)
     date = models.DateField()
     weight_kg = models.FloatField()
@@ -239,6 +272,7 @@ class WeightLog(models.Model):
 
 
 class SleepLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sleep_logs', null=True, blank=True)
     date = models.DateField()  # Date the night started
     hours = models.FloatField()
@@ -250,6 +284,7 @@ class SleepLog(models.Model):
 
 
 class CycleLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cycle_logs', null=True, blank=True)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
@@ -258,6 +293,7 @@ class CycleLog(models.Model):
 
 
 class HealthNote(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='health_notes', null=True, blank=True)
     date = models.DateField()
     category = models.CharField(max_length=20)  # symptom, appointment, medication, general
@@ -269,6 +305,7 @@ class HealthNote(models.Model):
 # LIBRARY MODULE
 # ==========================================
 class Book(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books', null=True, blank=True)
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=100)
@@ -284,6 +321,7 @@ class Book(models.Model):
 
 
 class ReadingSession(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reading_sessions', null=True, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='sessions')
     date = models.DateField()
@@ -295,14 +333,16 @@ class ReadingSession(models.Model):
 # PERFUMERY MODULE
 # ==========================================
 class PerfumeFormula(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='perfume_formulas', null=True, blank=True)
     name = models.CharField(max_length=200)
     inspiration = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     archived = models.BooleanField(default=False)
 
 
 class PerfumeVersion(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='perfume_versions', null=True, blank=True)
     formula = models.ForeignKey(PerfumeFormula, on_delete=models.CASCADE, related_name='versions')
     version = models.CharField(max_length=50)
@@ -317,6 +357,7 @@ class PerfumeVersion(models.Model):
 # WEALTH MODULE
 # ==========================================
 class SavingsEntry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='savings_entries', null=True, blank=True)
     date = models.DateField()
     amount = models.FloatField()
@@ -325,25 +366,28 @@ class SavingsEntry(models.Model):
 
 
 class SavingsGoal(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='savings_goals', null=True, blank=True)
     name = models.CharField(max_length=200)
     target_amount = models.FloatField()
     target_date = models.DateField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     completed_at = models.DateField(null=True, blank=True)
 
 
 class PurchasePlan(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='purchase_plans', null=True, blank=True)
     name = models.CharField(max_length=200)
     price = models.FloatField()
     priority = models.CharField(max_length=10)  # low, medium, high
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     purchased_at = models.DateField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
 
 
 class WealthProfile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wealth_profile', null=True, blank=True)
     currency = models.CharField(max_length=10, default='USD')
     hourly_rate = models.FloatField(default=0.0)
@@ -354,6 +398,7 @@ class WealthProfile(models.Model):
 # LIFE MODULE
 # ==========================================
 class JournalEntry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='journal_entries', null=True, blank=True)
     date = models.DateField()
     title = models.CharField(max_length=200)
@@ -363,6 +408,7 @@ class JournalEntry(models.Model):
 
 
 class Person(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='people', null=True, blank=True)
     name = models.CharField(max_length=100)
     relationship = models.CharField(max_length=100)
@@ -372,6 +418,7 @@ class Person(models.Model):
 
 
 class CallReminder(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='call_reminders', null=True, blank=True)
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='reminders')
     due_date = models.DateField()
