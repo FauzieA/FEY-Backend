@@ -66,6 +66,7 @@ class SessionExerciseSerializer(serializers.ModelSerializer):
 
 class WorkoutSessionSerializer(serializers.ModelSerializer):
     exercises = SessionExerciseSerializer(many=True)
+    total_volume_kg = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = WorkoutSession
@@ -76,6 +77,13 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
             'session_rating', 'xp_earned', 'completed', 'exercises',
             'created_at', 'updated_at'
         ]
+
+    def get_total_volume_kg(self, obj):
+        total = 0.0
+        for exercise in getattr(obj, 'exercises', []):
+            for set_log in getattr(exercise, 'sets', []):
+                total += (getattr(set_log, 'reps', 0) or 0) * (getattr(set_log, 'weight_kg', 0.0) or 0.0)
+        return total
 
     def create(self, validated_data):
         exercises_data = validated_data.pop('exercises', [])
@@ -111,7 +119,7 @@ class MemorizationLogSerializer(serializers.ModelSerializer):
 class DhikrLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = DhikrLog
-        fields = ['id', 'date', 'morning', 'evening', 'after_prayer', 'istighfar_count']
+        fields = ['id', 'date', 'dhikr_type', 'count', 'target_count']
 
 
 # ==========================================
