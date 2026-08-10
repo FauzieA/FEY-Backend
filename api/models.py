@@ -205,6 +205,8 @@ class QuranReadingLog(models.Model):
     pages = models.IntegerField(null=True, blank=True)
     minutes = models.IntegerField(null=True, blank=True)
     reflection = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class MemorizationEntry(models.Model):
@@ -216,6 +218,8 @@ class MemorizationEntry(models.Model):
     status = models.CharField(max_length=20)  # learning, memorized, needs-work
     started_at = models.DateTimeField(auto_now_add=True)
     last_reviewed_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class RevisionLog(models.Model):
@@ -225,6 +229,8 @@ class RevisionLog(models.Model):
     surah = models.CharField(max_length=100)
     quality = models.IntegerField()  # 1-5 self-assessed recall quality
     notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class AdhkarLog(models.Model):
@@ -235,6 +241,8 @@ class AdhkarLog(models.Model):
     evening = models.BooleanField(default=False)
     after_prayer = models.BooleanField(default=False)
     istighfar_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class MissedFast(models.Model):
@@ -243,6 +251,8 @@ class MissedFast(models.Model):
     missed_on = models.DateField()
     reason = models.CharField(max_length=200, blank=True, null=True)
     made_up_on = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 # ==========================================
@@ -258,6 +268,8 @@ class Measurement(models.Model):
     thigh_cm = models.FloatField(null=True, blank=True)
     arm_cm = models.FloatField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class WeightLog(models.Model):
@@ -266,6 +278,8 @@ class WeightLog(models.Model):
     date = models.DateField()
     weight_kg = models.FloatField()
     notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('date',)
@@ -278,6 +292,8 @@ class SleepLog(models.Model):
     hours = models.FloatField()
     quality = models.IntegerField()  # 1-5 self-assessed
     notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta: 
         unique_together = ('date',)
@@ -290,6 +306,8 @@ class CycleLog(models.Model):
     end_date = models.DateField(null=True, blank=True)
     symptoms = models.TextField(blank=True, null=True)
     flow = models.IntegerField(null=True, blank=True)  # 1-5 self-assessed
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class HealthNote(models.Model):
@@ -299,6 +317,8 @@ class HealthNote(models.Model):
     category = models.CharField(max_length=20)  # symptom, appointment, medication, general
     title = models.CharField(max_length=200)
     details = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 # ==========================================
@@ -318,6 +338,8 @@ class Book(models.Model):
     notes = models.TextField(blank=True, null=True)
     series_name = models.CharField(max_length=200, blank=True, null=True)
     expected_release_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class ReadingSession(models.Model):
@@ -327,6 +349,8 @@ class ReadingSession(models.Model):
     date = models.DateField()
     pages_read = models.IntegerField()
     minutes = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 # ==========================================
@@ -339,6 +363,7 @@ class PerfumeFormula(models.Model):
     inspiration = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     archived = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class PerfumeVersion(models.Model):
@@ -351,6 +376,8 @@ class PerfumeVersion(models.Model):
     ingredients = models.JSONField()  # List of {name, note, amount}
     observations = models.TextField(blank=True, null=True)
     rating = models.IntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 # ==========================================
@@ -363,6 +390,8 @@ class SavingsEntry(models.Model):
     amount = models.FloatField()
     goal = models.ForeignKey('SavingsGoal', on_delete=models.SET_NULL, null=True, blank=True, related_name='entries')
     note = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class SavingsGoal(models.Model):
@@ -373,6 +402,7 @@ class SavingsGoal(models.Model):
     target_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     completed_at = models.DateField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class PurchasePlan(models.Model):
@@ -384,6 +414,7 @@ class PurchasePlan(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     purchased_at = models.DateField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class WealthProfile(models.Model):
@@ -392,6 +423,8 @@ class WealthProfile(models.Model):
     currency = models.CharField(max_length=10, default='USD')
     hourly_rate = models.FloatField(default=0.0)
     monthly_savings_target = models.FloatField(default=0.0)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 # ==========================================
@@ -405,6 +438,8 @@ class JournalEntry(models.Model):
     body = models.TextField()
     mood = models.IntegerField(null=True, blank=True)
     gratitude = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Person(models.Model):
@@ -415,6 +450,8 @@ class Person(models.Model):
     cadence_days = models.IntegerField()  # How often (in days) to reach out
     last_contacted_at = models.DateField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class CallReminder(models.Model):
@@ -424,11 +461,16 @@ class CallReminder(models.Model):
     due_date = models.DateField()
     completed_at = models.DateField(null=True, blank=True)
     note = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class TimelineEvent(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='timeline_events', null=True, blank=True)
     date = models.DateField()
     title = models.CharField(max_length=200)
     category = models.CharField(max_length=20)  # milestone, memory, decision, travel, other
     description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)

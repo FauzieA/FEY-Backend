@@ -164,31 +164,31 @@ class WorkoutPlanSerializer(serializers.ModelSerializer):
 class QuranReadingLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuranReadingLog
-        fields = ['id', 'date', 'surah', 'from_ayah', 'to_ayah', 'pages', 'minutes', 'reflection']
+        fields = ['id', 'date', 'surah', 'from_ayah', 'to_ayah', 'pages', 'minutes', 'reflection', 'created_at', 'updated_at']
 
 
 class MemorizationEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = MemorizationEntry
-        fields = ['id', 'surah', 'from_ayah', 'to_ayah', 'status', 'started_at', 'last_reviewed_at']
+        fields = ['id', 'surah', 'from_ayah', 'to_ayah', 'status', 'started_at', 'last_reviewed_at', 'created_at', 'updated_at']
 
 
 class RevisionLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = RevisionLog
-        fields = ['id', 'date', 'surah', 'quality', 'notes']
+        fields = ['id', 'date', 'surah', 'quality', 'notes', 'created_at', 'updated_at']
 
 
 class AdhkarLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdhkarLog
-        fields = ['id', 'date', 'morning', 'evening', 'after_prayer', 'istighfar_count']
+        fields = ['id', 'date', 'morning', 'evening', 'after_prayer', 'istighfar_count', 'created_at', 'updated_at']
 
 
 class MissedFastSerializer(serializers.ModelSerializer):
     class Meta:
         model = MissedFast
-        fields = ['id', 'missed_on', 'reason', 'made_up_on']
+        fields = ['id', 'missed_on', 'reason', 'made_up_on', 'created_at', 'updated_at']
 
 
 # ==========================================
@@ -197,31 +197,31 @@ class MissedFastSerializer(serializers.ModelSerializer):
 class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Measurement
-        fields = ['id', 'date', 'waist_cm', 'hips_cm', 'chest_cm', 'thigh_cm', 'arm_cm', 'notes']
+        fields = ['id', 'date', 'waist_cm', 'hips_cm', 'chest_cm', 'thigh_cm', 'arm_cm', 'notes', 'created_at', 'updated_at']
 
 
 class WeightLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = WeightLog
-        fields = ['id', 'date', 'weight_kg', 'notes']
+        fields = ['id', 'date', 'weight_kg', 'notes', 'created_at', 'updated_at']
 
 
 class SleepLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = SleepLog
-        fields = ['id', 'date', 'hours', 'quality', 'notes']
+        fields = ['id', 'date', 'hours', 'quality', 'notes', 'created_at', 'updated_at']
 
 
 class CycleLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = CycleLog
-        fields = ['id', 'start_date', 'end_date', 'symptoms', 'flow']
+        fields = ['id', 'start_date', 'end_date', 'symptoms', 'flow', 'created_at', 'updated_at']
 
 
 class HealthNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthNote
-        fields = ['id', 'date', 'category', 'title', 'details']
+        fields = ['id', 'date', 'category', 'title', 'details', 'created_at', 'updated_at']
 
 
 # ==========================================
@@ -230,13 +230,13 @@ class HealthNoteSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['id', 'title', 'author', 'total_pages', 'current_page', 'status', 'started_at', 'finished_at', 'rating', 'notes', 'series_name', 'expected_release_date']
+        fields = ['id', 'title', 'author', 'total_pages', 'current_page', 'status', 'started_at', 'finished_at', 'rating', 'notes', 'series_name', 'expected_release_date', 'created_at', 'updated_at']
 
 
 class ReadingSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReadingSession
-        fields = ['id', 'book', 'date', 'pages_read', 'minutes']
+        fields = ['id', 'book', 'date', 'pages_read', 'minutes', 'created_at', 'updated_at']
 
 
 # ==========================================
@@ -245,13 +245,13 @@ class ReadingSessionSerializer(serializers.ModelSerializer):
 class PerfumeFormulaSerializer(serializers.ModelSerializer):
     class Meta:
         model = PerfumeFormula
-        fields = ['id', 'name', 'inspiration', 'created_at', 'archived']
+        fields = ['id', 'name', 'inspiration', 'created_at', 'archived', 'updated_at']
 
 
 class PerfumeVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PerfumeVersion
-        fields = ['id', 'formula', 'version', 'date', 'unit', 'ingredients', 'observations', 'rating']
+        fields = ['id', 'formula', 'version', 'date', 'unit', 'ingredients', 'observations', 'rating', 'created_at', 'updated_at']
 
 
 # ==========================================
@@ -260,25 +260,25 @@ class PerfumeVersionSerializer(serializers.ModelSerializer):
 class SavingsEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = SavingsEntry
-        fields = ['id', 'date', 'amount', 'goal', 'note']
+        fields = ['id', 'date', 'amount', 'goal', 'note', 'created_at', 'updated_at']
 
 
 class SavingsGoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = SavingsGoal
-        fields = ['id', 'name', 'target_amount', 'target_date', 'created_at', 'completed_at']
+        fields = ['id', 'name', 'target_amount', 'target_date', 'created_at', 'completed_at', 'updated_at']
 
 
 class PurchasePlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = PurchasePlan
-        fields = ['id', 'name', 'price', 'priority', 'created_at', 'purchased_at', 'notes']
+        fields = ['id', 'name', 'price', 'priority', 'created_at', 'purchased_at', 'notes', 'updated_at']
 
 
 class WealthProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = WealthProfile
-        fields = ['id', 'currency', 'hourly_rate', 'monthly_savings_target']
+        fields = ['id', 'currency', 'hourly_rate', 'monthly_savings_target', 'created_at', 'updated_at']
 
 
 # ==========================================
@@ -287,22 +287,22 @@ class WealthProfileSerializer(serializers.ModelSerializer):
 class JournalEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = JournalEntry
-        fields = ['id', 'date', 'title', 'body', 'mood', 'gratitude']
+        fields = ['id', 'date', 'title', 'body', 'mood', 'gratitude', 'created_at', 'updated_at']
 
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ['id', 'name', 'relationship', 'cadence_days', 'last_contacted_at', 'notes']
+        fields = ['id', 'name', 'relationship', 'cadence_days', 'last_contacted_at', 'notes', 'created_at', 'updated_at']
 
 
 class CallReminderSerializer(serializers.ModelSerializer):
     class Meta:
         model = CallReminder
-        fields = ['id', 'person', 'due_date', 'completed_at', 'note']
+        fields = ['id', 'person', 'due_date', 'completed_at', 'note', 'created_at', 'updated_at']
 
 
 class TimelineEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimelineEvent
-        fields = ['id', 'date', 'title', 'category', 'description']
+        fields = ['id', 'date', 'title', 'category', 'description', 'created_at', 'updated_at']
