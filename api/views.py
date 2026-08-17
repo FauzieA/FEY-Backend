@@ -30,6 +30,7 @@ from .models import (
     SavingsEntry,
     SavingsGoal,
     PurchasePlan,
+    Debt,
     WealthProfile,
     JournalEntry,
     Person,
@@ -64,6 +65,7 @@ from .serializers import (
     SavingsEntrySerializer,
     SavingsGoalSerializer,
     PurchasePlanSerializer,
+    DebtSerializer,
     WealthProfileSerializer,
     JournalEntrySerializer,
     PersonSerializer,
@@ -628,6 +630,29 @@ class PurchasePlanViewSet(viewsets.ModelViewSet):
         try:
             return super().update(request, *args, **kwargs)
         except (PurchasePlan.DoesNotExist, Http404, NotFound):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class DebtViewSet(viewsets.ModelViewSet):
+    serializer_class = DebtSerializer
+    permission_classes = [permissions.AllowAny]
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Debt.objects.all().order_by('-created_at')
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    def update(self, request, *args, **kwargs):
+        # Support upsert via PUT
+        try:
+            return super().update(request, *args, **kwargs)
+        except (Debt.DoesNotExist, Http404, NotFound):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)

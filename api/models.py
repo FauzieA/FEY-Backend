@@ -295,9 +295,6 @@ class SleepLog(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta: 
-        unique_together = ('date',)
-
 
 class CycleLog(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
@@ -414,6 +411,20 @@ class PurchasePlan(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     purchased_at = models.DateField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Debt(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='debts', null=True, blank=True)
+    name = models.CharField(max_length=200)  # e.g., "Credit Card", "Student Loan"
+    amount = models.FloatField()  # Total amount owed
+    interest_rate = models.FloatField(default=0.0)  # Annual interest rate as percentage
+    monthly_payment = models.FloatField(default=0.0)  # Required monthly payment
+    due_date = models.DateField(null=True, blank=True)  # Next payment due date
+    paid_from_savings = models.BooleanField(default=False)  # Whether to pay from savings
+    notes = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
 

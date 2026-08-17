@@ -28,6 +28,7 @@ from .views import (
     SavingsEntryViewSet,
     SavingsGoalViewSet,
     PurchasePlanViewSet,
+    DebtViewSet,
     WealthProfileViewSet,
     JournalEntryViewSet,
     PersonViewSet,
@@ -75,6 +76,7 @@ router.register(r'perfume-versions', PerfumeVersionViewSet, basename='perfume-ve
 router.register(r'savings-entries', SavingsEntryViewSet, basename='savings-entries')
 router.register(r'savings-goals', SavingsGoalViewSet, basename='savings-goals')
 router.register(r'purchase-plans', PurchasePlanViewSet, basename='purchase-plans')
+router.register(r'debts', DebtViewSet, basename='debts')
 router.register(r'wealth-profile', WealthProfileViewSet, basename='wealth-profile')
 
 # Life Module
