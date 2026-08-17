@@ -71,7 +71,7 @@ class WorkoutSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutSession
         fields = [
-            'id', 'plan_id', 'plan_title', 'started_at', 'completed_at',
+            'id', 'user', 'plan_id', 'plan_title', 'started_at', 'completed_at',
             'duration_seconds', 'duration_minutes', 'total_volume_kg',
             'total_sets_completed', 'total_reps_completed', 'average_rpe',
             'session_rating', 'xp_earned', 'completed', 'exercises',

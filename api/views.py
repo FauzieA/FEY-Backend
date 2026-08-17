@@ -91,6 +91,15 @@ class WorkoutSessionViewSet(viewsets.ModelViewSet):
         return WorkoutSession.objects.all().order_by('-started_at')
 
     def perform_create(self, serializer):
+        # Check if session with this ID already exists (upsert)
+        session_id = serializer.validated_data.get('id')
+        if session_id:
+            try:
+                existing = WorkoutSession.objects.get(id=session_id)
+                serializer.update(existing, serializer.validated_data)
+                return
+            except WorkoutSession.DoesNotExist:
+                pass
         serializer.save()
 
     def update(self, request, *args, **kwargs):
