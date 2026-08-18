@@ -279,7 +279,7 @@ class PurchasePlanSerializer(serializers.ModelSerializer):
 class DebtSerializer(serializers.ModelSerializer):
     class Meta:
         model = Debt
-        fields = ['id', 'name', 'amount', 'interest_rate', 'monthly_payment', 'due_date', 'paid_from_savings', 'notes', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'source', 'amount', 'currency', 'notes', 'created_at', 'updated_at']
 
 
 class WealthProfileSerializer(serializers.ModelSerializer):

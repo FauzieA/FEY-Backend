@@ -417,12 +417,10 @@ class PurchasePlan(models.Model):
 class Debt(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='debts', null=True, blank=True)
-    name = models.CharField(max_length=200)  # e.g., "Credit Card", "Student Loan"
+    name = models.CharField(max_length=200)  # e.g., "Money borrowed from mom"
+    source = models.CharField(max_length=200, default='Unknown')  # e.g., "Mom", "Myself", "Friend"
     amount = models.FloatField()  # Total amount owed
-    interest_rate = models.FloatField(default=0.0)  # Annual interest rate as percentage
-    monthly_payment = models.FloatField(default=0.0)  # Required monthly payment
-    due_date = models.DateField(null=True, blank=True)  # Next payment due date
-    paid_from_savings = models.BooleanField(default=False)  # Whether to pay from savings
+    currency = models.CharField(max_length=10, default='USD')  # Currency of the debt
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
