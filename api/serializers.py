@@ -29,7 +29,6 @@ from .models import (
     SavingsEntry,
     SavingsGoal,
     PurchasePlan,
-    Debt,
     WealthProfile,
     JournalEntry,
     Person,
@@ -274,12 +273,6 @@ class PurchasePlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = PurchasePlan
         fields = ['id', 'name', 'price', 'priority', 'created_at', 'purchased_at', 'notes', 'updated_at']
-
-
-class DebtSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Debt
-        fields = ['id', 'name', 'source', 'amount', 'currency', 'notes', 'created_at', 'updated_at']
 
 
 class WealthProfileSerializer(serializers.ModelSerializer):
